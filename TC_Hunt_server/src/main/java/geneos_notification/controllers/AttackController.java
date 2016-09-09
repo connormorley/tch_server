@@ -9,10 +9,11 @@ import laviathon_server.threads.HealthCheck;
 
 public class AttackController {
 
-	private static AtomicInteger currentSequence;
+	public static AtomicInteger currentSequence;
 	public static ArrayList<Integer> failedSequences = new ArrayList<Integer>();
     public static boolean runningAttack = false;
-    public static File target;
+    public static String target;
+    public static AtomicInteger attackID;
 	
 	public static int decideAttackSequenceForClient(String deviceID)
 	{
@@ -26,7 +27,9 @@ public class AttackController {
 		}
 		else
 		{
-			return currentSequence.getAndIncrement(); // If there are no failed sequences, issue newest sequence.
+			int seq = currentSequence.getAndIncrement();
+			temp.setAttackSequence(seq);
+			return seq; // If there are no failed sequences, issue newest sequence.
 		}
 	}
 	

@@ -31,7 +31,7 @@ public class HealthCheck {
 						//its sequence is set as failed and it is removed from the server.
 					}
 				}
-				Thread.currentThread().sleep(10000); // Check runs in 10 second intervals.
+				Thread.currentThread().sleep(2000); // Check runs in 2 second intervals.
 			}
 			return 1;
 		}
