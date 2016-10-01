@@ -57,7 +57,7 @@ public class StartController {
 				"  888      888    888  T88b Y88b  d88P\n" +
 				"8888888    888    888   T88b \"Y8888P\"  © \n" +
 				"\n" +
-				"<< Version 1.3.1 >>      << Created by C.Morley & D.Ratnaras 2015/2016 >>\n" +
+				"<< Version 0.6>>      << Created by C.Morley 2016/2017 >>\n" +
 				"\n");
 		start();
 	}
@@ -85,7 +85,7 @@ public static void readSettingsFile() {
 		logA.doLog("Start" , "[Start]System Settings file not found - Server Terminating", "Critical");
 		System.exit(0);
 	}
-	while(scnr.hasNextLine())
+	while(scnr.hasNextLine()) // Replace wih properties file system
 	{
 		String line = scnr.nextLine();
 		if (line.contains("mySQL Host")) {
@@ -150,7 +150,7 @@ public static void readSettingsFile() {
     	LogHandler.limit = Integer.parseInt(setting.get("MaxLog"));
     	LogHandler.setLevel(setting.get("LogLevel"));
     	try{
-    	checkValidity();
+    	//checkValidity();
     	}
     	catch(Exception e)
     	{

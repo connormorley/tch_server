@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import geneos_notification.loggers.LogObject;
 import geneos_notification.loggers.LtA;
+import laviathon_server.threads.HealthCheck;
 
 
 
@@ -54,6 +55,25 @@ public class InterfaceController {
 			else
 			return "Unauthorised access";
     }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //This is used by the client to poll if the attack has generated a result or not depending on the attackID issued at initiation.
+    @RequestMapping(value="/resultCheck", method=RequestMethod.POST)		
+	public static String Check(@RequestParam(value="attackID", defaultValue="") String attackID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
+	{
+    	if (password.equals(serverPassword)) 
+    	{
+    		Integer check = Integer.parseInt(attackID);
+    		if(AttackController.attackResults.containsKey(check))
+    			return AttackController.attackResults.get(check);
+    		else
+    		return "No result"; // 
+    	}
+    	else
+    		return "Unauthorised access";
+	}
      
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +115,7 @@ public class InterfaceController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value="/issueAttack", method=RequestMethod.POST)		
-	public static void issueAttack(@RequestParam(value="attackblock", defaultValue="") String attackBlock, @RequestParam(value="password", defaultValue="") String password) throws Exception 
+	public static String issueAttack(@RequestParam(value="attackblock", defaultValue="") String attackBlock, @RequestParam(value="password", defaultValue="") String password) throws Exception 
 	{
 		if (password.equals(serverPassword)){
 			//System.out.println("command received " + password + "   " + attackBlock);
@@ -121,10 +141,26 @@ public class InterfaceController {
 		AttackController.currentSequence = new AtomicInteger(0);
 		AttackController.attackID = new AtomicInteger(0);
 		AttackController.attackID.incrementAndGet();
-		return;
+		HealthCheck.startHealthCheckThread();
+		return Integer.toString(AttackController.attackID.get());
 		} else
-		return;
+		return "0";
 	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Indicate to the server to stop the running attack, stores the found password in association with the attack ID within the system for retrieval by the client.
+	@RequestMapping(value = "/passwordFound", method = RequestMethod.POST)
+	public static void passwordFound(@RequestParam(value = "password", defaultValue = "") String password, @RequestParam(value="result", defaultValue="") String result) throws Exception {
+		if (password.equals(serverPassword)) {
+			AttackController.runningAttack = false;
+			AttackController.attackResults.put(AttackController.attackID.get(), result);
+			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " had been identified as : " + result, "Info");
+			System.out.println("password is " + result);
+		} else
+			return;
+		}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,6 +171,15 @@ public class InterfaceController {
 			return Integer.toString(AttackController.attackID.get());
 		} else
 			return "0";
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//TEST ONLY!!!!!!!  ***********************************************************
+	@RequestMapping(value = "/checkLive", method = RequestMethod.GET)
+	public static String test() throws Exception {
+	return "Connection ok";
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

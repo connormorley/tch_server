@@ -2,6 +2,8 @@ package geneos_notification.controllers;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import geneos_notification.objects.Device;
@@ -14,6 +16,7 @@ public class AttackController {
     public static boolean runningAttack = false;
     public static String target;
     public static AtomicInteger attackID;
+    public static Map<Integer, String> attackResults = new HashMap<Integer, String>();
 	
 	public static int decideAttackSequenceForClient(String deviceID)
 	{

@@ -226,3 +226,213 @@ INFO 03-17-2016 16:45:19 || [U-Controller]Login attempt with username : testa@De
 INFO 03-17-2016 16:45:19 || [SQL]Checking user : testa@Default & testa
 INFO 03-17-2016 16:45:19 || [SQL]Device Check, User has yet to verify device : testa
 INFO 03-17-2016 16:45:19 || [U-Controller]testa@Default has already been sent a verification email for testa
+SEVERE 09-30-2016 20:10:51 || [SQL]Connection information issue, either driver or address : com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.ConnectException
+MESSAGE: Connection refused: connect
+
+STACKTRACE:
+
+java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.doConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+	at java.net.PlainSocketImpl.connect(Unknown Source)
+	at java.net.SocksSocketImpl.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:256)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:271)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2771)
+	at com.mysql.jdbc.Connection.<init>(Connection.java:1555)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:285)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at geneos_notification.controllers.DatabaseController.SQLConnect(DatabaseController.java:32)
+	at geneos_notification.controllers.StartController.checkValidity(StartController.java:165)
+	at geneos_notification.controllers.StartController.configureSetting(StartController.java:153)
+	at geneos_notification.controllers.StartController.start(StartController.java:67)
+	at geneos_notification.controllers.StartController.main(StartController.java:62)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+SEVERE 09-30-2016 20:10:51 || [Start]There was an error with the SQL configuration or address, please confirm details.
+SEVERE 09-30-2016 20:10:51 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. System shutting down.
+SEVERE 09-30-2016 20:11:21 || [SQL]Connection information issue, either driver or address : com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.ConnectException
+MESSAGE: Connection refused: connect
+
+STACKTRACE:
+
+java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.doConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+	at java.net.PlainSocketImpl.connect(Unknown Source)
+	at java.net.SocksSocketImpl.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:256)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:271)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2771)
+	at com.mysql.jdbc.Connection.<init>(Connection.java:1555)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:285)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at geneos_notification.controllers.DatabaseController.SQLConnect(DatabaseController.java:32)
+	at geneos_notification.controllers.StartController.checkValidity(StartController.java:165)
+	at geneos_notification.controllers.StartController.configureSetting(StartController.java:153)
+	at geneos_notification.controllers.StartController.start(StartController.java:67)
+	at geneos_notification.controllers.StartController.main(StartController.java:62)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+SEVERE 09-30-2016 20:11:21 || [Start]There was an error with the SQL configuration or address, please confirm details.
+SEVERE 09-30-2016 20:11:21 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. System shutting down.
+SEVERE 09-30-2016 20:23:44 || [SQL]Connection information issue, either driver or address : com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.ConnectException
+MESSAGE: Connection refused: connect
+
+STACKTRACE:
+
+java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.doConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+	at java.net.PlainSocketImpl.connect(Unknown Source)
+	at java.net.SocksSocketImpl.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:256)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:271)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2771)
+	at com.mysql.jdbc.Connection.<init>(Connection.java:1555)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:285)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at geneos_notification.controllers.DatabaseController.SQLConnect(DatabaseController.java:32)
+	at geneos_notification.controllers.StartController.checkValidity(StartController.java:165)
+	at geneos_notification.controllers.StartController.configureSetting(StartController.java:153)
+	at geneos_notification.controllers.StartController.start(StartController.java:67)
+	at geneos_notification.controllers.StartController.main(StartController.java:62)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+SEVERE 09-30-2016 20:23:44 || [Start]There was an error with the SQL configuration or address, please confirm details.
+SEVERE 09-30-2016 20:23:44 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. System shutting down.
+SEVERE 09-30-2016 20:24:44 || [SQL]Connection information issue, either driver or address : com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.ConnectException
+MESSAGE: Connection timed out: connect
+
+STACKTRACE:
+
+java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.doConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+	at java.net.PlainSocketImpl.connect(Unknown Source)
+	at java.net.SocksSocketImpl.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:256)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:271)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2771)
+	at com.mysql.jdbc.Connection.<init>(Connection.java:1555)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:285)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at geneos_notification.controllers.DatabaseController.SQLConnect(DatabaseController.java:32)
+	at geneos_notification.controllers.StartController.checkValidity(StartController.java:165)
+	at geneos_notification.controllers.StartController.configureSetting(StartController.java:153)
+	at geneos_notification.controllers.StartController.start(StartController.java:67)
+	at geneos_notification.controllers.StartController.main(StartController.java:62)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+SEVERE 09-30-2016 20:24:44 || [Start]There was an error with the SQL configuration or address, please confirm details.
+SEVERE 09-30-2016 20:24:44 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. System shutting down.
+SEVERE 09-30-2016 20:27:21 || [SQL]Connection information issue, either driver or address : com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.ConnectException
+MESSAGE: Connection timed out: connect
+
+STACKTRACE:
+
+java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.doConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+	at java.net.PlainSocketImpl.connect(Unknown Source)
+	at java.net.SocksSocketImpl.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:256)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:271)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2771)
+	at com.mysql.jdbc.Connection.<init>(Connection.java:1555)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:285)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at geneos_notification.controllers.DatabaseController.SQLConnect(DatabaseController.java:32)
+	at geneos_notification.controllers.StartController.checkValidity(StartController.java:165)
+	at geneos_notification.controllers.StartController.configureSetting(StartController.java:153)
+	at geneos_notification.controllers.StartController.start(StartController.java:67)
+	at geneos_notification.controllers.StartController.main(StartController.java:62)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+SEVERE 09-30-2016 20:27:21 || [Start]There was an error with the SQL configuration or address, please confirm details.
+SEVERE 09-30-2016 20:27:21 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. System shutting down.

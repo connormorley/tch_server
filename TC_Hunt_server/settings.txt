@@ -4,7 +4,7 @@
 
 Please alter the variables below to match those of your active system:
 
-mySQL Host			=localhost
+mySQL Host			=10.246.202.168
 mySQL Database Name =test
 mySQL Username 		=root
 mySQL Password		=iPods123
