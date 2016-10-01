@@ -167,7 +167,7 @@ public class InterfaceController {
 
 	@RequestMapping(value = "/attackID", method = RequestMethod.POST)
 	public static String checkAttackID(@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
-		if (password.equals(serverPassword)) {
+		if (password.equals(serverPassword) && AttackController.runningAttack == true) {
 			return Integer.toString(AttackController.attackID.get());
 		} else
 			return "0";
