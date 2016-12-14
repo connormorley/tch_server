@@ -15,7 +15,7 @@ public class AttackController {
 	public static ArrayList<Integer> failedSequences = new ArrayList<Integer>();
     public static boolean runningAttack = false;
     public static String target;
-    public static AtomicInteger attackID;
+    public static AtomicInteger attackID = new AtomicInteger(1);
     public static Map<Integer, String> attackResults = new HashMap<Integer, String>();
 	
 	public static int decideAttackSequenceForClient(String deviceID)

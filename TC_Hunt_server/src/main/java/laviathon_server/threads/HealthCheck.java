@@ -14,16 +14,19 @@ import geneos_notification.objects.Device;
 
 public class HealthCheck {
 	
-	//Thread to monitor the node status, checks their health every 2 seconds to see if their last "ping" was over 10 seconds ago. If yes the node is removed from 
+	 //Thread to monitor the node status, checks their health every 2 seconds to see if their last "ping" was over 10 seconds ago. If yes the node is removed from 
 	//the user nodes and the attack sequence assigned to the node is added to the failed sequences queue to be picked up by the next available node OR the same
 	//node if it re-established contact with the server (although it will have to start the sequence from the start).
+	static Future<Integer> future;
+	
 	public static void startHealthCheckThread()
 	{
 	ExecutorService exec = Executors.newSingleThreadExecutor();
 	Callable<Integer> callable = new Callable<Integer>() {
 		@Override
-		public Integer call() throws JSONException, InterruptedException{	
-			Thread.currentThread().sleep(7500);
+		public Integer call() throws JSONException{	
+			try {
+				Thread.currentThread().sleep(7500);
 			while(AttackController.runningAttack == true) // For as long as the attack is running carry out health check
 			{
 				for(Map.Entry<String, Device> devEntry : UserController.nodes.entrySet())
@@ -38,9 +41,17 @@ public class HealthCheck {
 				Thread.currentThread().sleep(2000); // Check runs in 2 second intervals.
 			}
 			return 1;
+			} catch (InterruptedException e) {
+				return 1;
+			}
 		}
 	};
-	Future<Integer> future = exec.submit(callable);
+	future = exec.submit(callable);
+	}
+	
+	public static void endHealtCheckThread()
+	{
+		future.cancel(true); //terminate the callable future thread, cause interrupt exception resulting in return;
 	}
 
 }

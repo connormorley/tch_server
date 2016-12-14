@@ -102,13 +102,17 @@ public class InterfaceController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value="/healthCheck", method=RequestMethod.POST)		
-	public static void healthCheck(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
+	public static String healthCheck(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
 	{
-		if (password.equals(serverPassword)) {
+		if (AttackController.runningAttack == false)
+		{
+			return "abort";
+		}
+	    else if (password.equals(serverPassword)) {
 		UserController.healthUpdate(deviceID); // Updates the health time of the device, this is used to indicate when it last checked in with the server for timeout control.
-		return;
+		return "";
 		} else
-		return;
+		return "";
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,7 +143,7 @@ public class InterfaceController {
 		
 		AttackController.runningAttack = true;
 		AttackController.currentSequence = new AtomicInteger(0);
-		AttackController.attackID = new AtomicInteger(0);
+		//AttackController.attackID = new AtomicInteger(1); //?
 		AttackController.attackID.incrementAndGet();
 		HealthCheck.startHealthCheckThread();
 		return Integer.toString(AttackController.attackID.get());
@@ -162,6 +166,23 @@ public class InterfaceController {
 			return;
 		}
 	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Indicate to the server to stop the running attack, stores the found password in association with the attack ID within the system for retrieval by the client.
+	@RequestMapping(value = "/abortAttack", method = RequestMethod.POST)
+	public static void abortAttack(@RequestParam(value = "password", defaultValue = "") String password, @RequestParam(value="attackID", defaultValue="") String attackID) throws Exception {
+		if (password.equals(serverPassword)) {
+			AttackController.runningAttack = false;
+			AttackController.attackResults.put(AttackController.attackID.get(), "User Aborted");
+			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " has been manually termianted by user.", "Info");
+			System.out.println("Attack was manually terminated by user");
+		} else
+			return;
+		}
+	
+	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -170,18 +191,20 @@ public class InterfaceController {
 		if (password.equals(serverPassword) && AttackController.runningAttack == true) {
 			return Integer.toString(AttackController.attackID.get());
 		} else
-			return "0";
+			return "0"; 
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	//TEST ONLY!!!!!!!  ***********************************************************
-	@RequestMapping(value = "/checkLive", method = RequestMethod.GET)
-	public static String test() throws Exception {
-	return "Connection ok";
+	@RequestMapping(value = "/checkLive", method = RequestMethod.POST)
+	public static String test(@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
+		if (password.equals(serverPassword)) {
+			return "Connection ok";
+		} else
+			return "";
 	}
-	
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
