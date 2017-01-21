@@ -38,6 +38,7 @@ public class InterfaceController {
     private static String serverPassword = "test";
     public static int sampleRate;
     public static ArrayList<JSONObject> currentDataviewEntityList;
+    public static int userWordlistsExpired = 0;
     static LtA logA = new LogObject();
 
     
@@ -101,6 +102,17 @@ public class InterfaceController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	@RequestMapping(value = "/getAttackMethod", method = RequestMethod.POST)
+	public static String getAttackMethod(@RequestParam(value = "deviceid", defaultValue = "") String deviceID, @RequestParam(value = "password", defaultValue = "") String password) throws Exception {
+		if (password.equals(serverPassword))
+			return AttackController.attackMethod; 
+		else
+			return "0"; 
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	@RequestMapping(value="/healthCheck", method=RequestMethod.POST)		
 	public static String healthCheck(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
 	{
@@ -119,7 +131,7 @@ public class InterfaceController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value="/issueAttack", method=RequestMethod.POST)		
-	public static String issueAttack(@RequestParam(value="attackblock", defaultValue="") String attackBlock, @RequestParam(value="password", defaultValue="") String password) throws Exception 
+	public static String issueAttack(@RequestParam(value="attackblock", defaultValue="") String attackBlock, @RequestParam(value="password", defaultValue="") String password, @RequestParam(value="attackmethod", defaultValue="") String attackMethod) throws Exception 
 	{
 		if (password.equals(serverPassword)){
 			//System.out.println("command received " + password + "   " + attackBlock);
@@ -133,16 +145,17 @@ public class InterfaceController {
 	    }
 		
 		//byte[] finalbytes = attackBlock.getBytes("ISO-8859-1");
-		File outputFile = new File("testingTCFile");
+/*		File outputFile = new File("testingTCFile");
 		    try ( FileOutputStream outputStream = new FileOutputStream(outputFile); ) {
 		        outputStream.write(data, 0, data.length);  //write the bytes and your done. 
 		        outputStream.flush();
 		    } catch (Exception e) {
 		        e.printStackTrace();
-		    }
+		    }*/
 		
 		AttackController.runningAttack = true;
 		AttackController.currentSequence = new AtomicInteger(0);
+		AttackController.attackMethod = attackMethod;
 		//AttackController.attackID = new AtomicInteger(1); //?
 		AttackController.attackID.incrementAndGet();
 		HealthCheck.startHealthCheckThread();
@@ -162,10 +175,28 @@ public class InterfaceController {
 			AttackController.attackResults.put(AttackController.attackID.get(), result);
 			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " had been identified as : " + result, "Info");
 			System.out.println("password is " + result);
+			userWordlistsExpired = 0;
 		} else
 			return;
 		}
 	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Indicate to the server to stop the running attack, marks the attack as exhausting the wordlist available.
+	@RequestMapping(value = "/wordlistExhausted", method = RequestMethod.POST)
+	public static void wordlistExhausted(@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
+		if (password.equals(serverPassword)) {
+			userWordlistsExpired++;
+			if(userWordlistsExpired == UserController.nodes.size())
+			{
+			AttackController.runningAttack = false;
+			AttackController.attackResults.put(AttackController.attackID.get(), "Wordlist Exhausted");
+			logA.doLog("INTERFACE", "[INTERFACE]Wordlist exhasuted for attack " + AttackController.attackID.get(), "Info");
+			}
+		} else
+			return;
+	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

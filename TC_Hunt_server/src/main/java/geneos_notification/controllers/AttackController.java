@@ -17,6 +17,7 @@ public class AttackController {
     public static String target;
     public static AtomicInteger attackID = new AtomicInteger(1);
     public static Map<Integer, String> attackResults = new HashMap<Integer, String>();
+    public static String attackMethod;
 	
 	public static int decideAttackSequenceForClient(String deviceID)
 	{

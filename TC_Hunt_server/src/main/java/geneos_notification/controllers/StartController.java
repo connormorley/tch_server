@@ -48,16 +48,15 @@ public class StartController {
 	
 	public static void main(String[] args) throws InterruptedException, ExecutionException
 	{
-		System.out.print("\n8888888888888888888888888b.  .d8888b. \n" +
-				"  888      888    888   Y88bd88P  Y88b\n" +
-				"  888      888    888    888Y88b.     \n" +
-				"  888      888    888   d88P \"Y888b.  \n" +
-				"  888      888    8888888P\"     \"Y88b.\n" +
-				"  888      888    888 T88b        \"888\n" +
-				"  888      888    888  T88b Y88b  d88P\n" +
-				"8888888    888    888   T88b \"Y8888P\"  © \n" +
+		System.out.print("");
+		System.out.print("\nd888888P  a88888b.  888888ba  dP     dP 888888ba   a88888b. dP     dP  \n" + 
+				"   88    d8'   `88  88    `8b 88     88 88    `8b d8'   `88 88     88  \n" + 
+				"   88    88        a88aaaa8P' 88     88 88     88 88        88aaaaa88a \n" + 
+				"   88    88         88   `8b. 88     88 88     88 88        88     88  \n" + 
+				"   88    Y8.   .88  88     88 Y8.   .8P 88     88 Y8.   .88 88     88  \n" + 
+				"   dP     Y88888P'  dP     dP `Y88888P' dP     dP  Y88888P' dP     dP \n" +
 				"\n" +
-				"<< Version 0.6>>      << Created by C.Morley 2016/2017 >>\n" +
+				"<< Version 0.7>>      << Created by C.Morley 2016/2017 >>\n" +
 				"\n");
 		start();
 	}

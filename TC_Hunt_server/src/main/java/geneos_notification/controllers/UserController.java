@@ -16,7 +16,7 @@ public class UserController {
 		if(!nodes.containsKey(deviceID))
 			nodes.put(deviceID, new Device(deviceID));
 		if(AttackController.runningAttack)
-			ret = "yes";
+			ret = Integer.toString(AttackController.attackID.get());
 		return ret;
 	}
 	
