@@ -16,6 +16,9 @@ public class UserController {
 		if(!nodes.containsKey(deviceID))
 			nodes.put(deviceID, new Device(deviceID));
 		if(AttackController.runningAttack)
+			if(AttackController.attackMethod.equals("Dictionary") && !AttackController.dictionaryAttackOutOfWords)
+				ret = Integer.toString(AttackController.attackID.get());
+			else if(AttackController.attackMethod.equals("Brute Force"))
 			ret = Integer.toString(AttackController.attackID.get());
 		return ret;
 	}

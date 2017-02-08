@@ -46,8 +46,8 @@ public class InterfaceController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////    	
     
-    //Used to check if an attack is in progress to initiate the client into an attack mode instead of idle,
-    //additionally is first instance where the client node is registered with the server for reference.
+    //Used to check if an attack is in progress to initiate the node into an attack mode instead of idle,
+    //additionally is first instance where the attack node is registered with the server for reference.
     @RequestMapping(value="/attackCheck", method=RequestMethod.POST)		
     public static String attackCheck(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
     {
@@ -56,6 +56,21 @@ public class InterfaceController {
 			else
 			return "Unauthorised access";
     }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@RequestMapping(value = "/clientAttackCheck", method = RequestMethod.POST)
+	public static String clientAttackCheck(@RequestParam(value = "deviceid", defaultValue = "") String deviceID,
+			@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
+		if (password.equals(serverPassword))
+			if(AttackController.runningAttack)
+				return Integer.toString(AttackController.attackID.get());
+			else
+				return "no";
+		else
+			return "Unauthorised access";
+	}
     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,16 +102,44 @@ public class InterfaceController {
 					return null;
 
 	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@RequestMapping(value = "/issueBenchmark", method = RequestMethod.POST)
+	public static void issueBenchmark(@RequestParam(value = "password", defaultValue = "") String password, @RequestParam(value = "benchmark", defaultValue = "") String benchmark)
+			throws Exception {
+		if (password.equals(serverPassword))
+			if(AttackController.benchmark > Integer.parseInt(benchmark) && AttackController.runningAttack == false)
+			{
+				AttackController.benchmark = Integer.parseInt(benchmark);
+				System.out.println("Benchmark changed to : " + benchmark);
+			}
+			else if(AttackController.benchmark > Integer.parseInt(benchmark))
+				AttackController.switchBenchmark = Integer.parseInt(benchmark);
+	}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	@RequestMapping(value = "/getAttackSequence", method = RequestMethod.POST)
-	public static String getAttackSequence(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value = "password", defaultValue = "") String password) throws Exception {
+	@RequestMapping(value = "/getARN", method = RequestMethod.POST)
+	public static String getARN(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value = "password", defaultValue = "") String password) throws Exception {
 				if(password.equals(serverPassword))
-					return Integer.toString(AttackController.decideAttackSequenceForClient(deviceID)); // Checks if the device is registered and returns the attack sequence for that device.
+					return Integer.toString(AttackController.decideAttackSequenceForNode(deviceID)); // Checks if the device is registered and returns the attack sequence for that device.
 				else
 					return "0"; // If device is unauthorised nothing is issued against device id so returned value is irrelevant
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@RequestMapping(value = "/getBalance", method = RequestMethod.POST)
+	public static String getBalance(
+			@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
+		if (password.equals(serverPassword))
+			return Integer.toString(AttackController.benchmark);
+		else
+			return "0";
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +199,7 @@ public class InterfaceController {
 		AttackController.runningAttack = true;
 		AttackController.currentSequence = new AtomicInteger(0);
 		AttackController.attackMethod = attackMethod;
+		AttackController.failedSequences.clear();
 		//AttackController.attackID = new AtomicInteger(1); //?
 		AttackController.attackID.incrementAndGet();
 		HealthCheck.startHealthCheckThread();
@@ -176,6 +220,8 @@ public class InterfaceController {
 			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " had been identified as : " + result, "Info");
 			System.out.println("password is " + result);
 			userWordlistsExpired = 0;
+			AttackController.updateBenchmark();
+			AttackController.dictionaryAttackOutOfWords = false; // TEST
 		} else
 			return;
 		}
@@ -188,10 +234,14 @@ public class InterfaceController {
 	public static void wordlistExhausted(@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
 		if (password.equals(serverPassword)) {
 			userWordlistsExpired++;
+			if(AttackController.dictionaryAttackOutOfWords == false)
+				AttackController.dictionaryAttackOutOfWords = true; // TEST
 			if(userWordlistsExpired == UserController.nodes.size())
 			{
 			AttackController.runningAttack = false;
 			AttackController.attackResults.put(AttackController.attackID.get(), "Wordlist Exhausted");
+			AttackController.dictionaryAttackOutOfWords = false; //TEST
+			AttackController.updateBenchmark();
 			logA.doLog("INTERFACE", "[INTERFACE]Wordlist exhasuted for attack " + AttackController.attackID.get(), "Info");
 			}
 		} else
@@ -201,12 +251,14 @@ public class InterfaceController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Indicate to the server to stop the running attack, stores the found password in association with the attack ID within the system for retrieval by the client.
+	//Indicate to the server to stop the running attack, marks the result of the scan as "user aborted". 
 	@RequestMapping(value = "/abortAttack", method = RequestMethod.POST)
 	public static void abortAttack(@RequestParam(value = "password", defaultValue = "") String password, @RequestParam(value="attackID", defaultValue="") String attackID) throws Exception {
 		if (password.equals(serverPassword)) {
 			AttackController.runningAttack = false;
 			AttackController.attackResults.put(AttackController.attackID.get(), "User Aborted");
+			AttackController.dictionaryAttackOutOfWords = false; // TEST
+			AttackController.updateBenchmark();
 			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " has been manually termianted by user.", "Info");
 			System.out.println("Attack was manually terminated by user");
 		} else

@@ -9,12 +9,13 @@ import java.util.concurrent.Future;
 import org.json.JSONException;
 
 import geneos_notification.controllers.AttackController;
+import geneos_notification.controllers.InterfaceController;
 import geneos_notification.controllers.UserController;
 import geneos_notification.objects.Device;
 
 public class HealthCheck {
 	
-	 //Thread to monitor the node status, checks their health every 2 seconds to see if their last "ping" was over 10 seconds ago. If yes the node is removed from 
+	 //Thread to monitor the node status, checks their health every 7.5 seconds to see if their last "ping" was over 10 seconds ago. If yes the node is removed from 
 	//the user nodes and the attack sequence assigned to the node is added to the failed sequences queue to be picked up by the next available node OR the same
 	//node if it re-established contact with the server (although it will have to start the sequence from the start).
 	static Future<Integer> future;
@@ -36,6 +37,11 @@ public class HealthCheck {
 						AttackController.failedSequences.add(devEntry.getValue().getAttackSequence());
 						System.out.println("Node: '" + devEntry.getKey() + "' has been removed and the attack sequence '" + devEntry.getValue().getAttackSequence() + "' has been added to the failed sequences.");
 						UserController.nodes.remove(devEntry.getKey());
+						if(UserController.nodes.size() == InterfaceController.userWordlistsExpired)
+						{
+							InterfaceController.userWordlistsExpired = 0;
+							AttackController.dictionaryAttackOutOfWords = false;
+						}
 					}
 				}
 				Thread.currentThread().sleep(2000); // Check runs in 2 second intervals.

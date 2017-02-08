@@ -17,6 +17,23 @@ import geneos_notification.loggers.LogObject;
 import geneos_notification.loggers.LtA;
 
 
+/*	Created by:		Connor Morley
+ *  Date:			27/01/2017
+ * 	Title:			TCrunch Control Server
+ *  Version:		1.6
+ *  Notes:			Main class - Controls settings file read and configuration and prelinary checks before enabling the server to outside communication.
+ *  
+ *  References:		> "File > New > Import Spring Getting Started Content > Rest Server" = Spring boot configuration obtained through this function.  
+ *  				  This provided the default gradle files, pom.xml and three class files which were this class with only the main method and one line;
+ *  				  a basic version if what is now named the "InterfaceController" with only one entry and a third object class used to crete an example output
+ *  				  from an http request. Apart from the gradle files and pom.xml, none of the original code has remained the same except for the line:
+ *  				  "SpringApplication.run(StartController.class);" which is used to initiated the server.
+ *  
+ *   				> https://spring.io/guides/gs/sts/ = Guide to using the "Import Spring Getting Started Content" function.
+ */
+
+
+
 @SpringBootApplication
 public class StartController {
 	
@@ -69,8 +86,6 @@ public class StartController {
     }
 
 public static void readSettingsFile() {
-	//System.out.println(System.getProperty("os.name"));
-	//System.getProperties().list(System.out);
 	File file = null;
 	if(System.getProperty("os.name").contains("Windows"))
 	file = new File(".\\settings.txt");

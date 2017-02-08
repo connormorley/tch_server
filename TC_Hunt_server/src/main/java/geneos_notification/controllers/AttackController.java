@@ -18,8 +18,11 @@ public class AttackController {
     public static AtomicInteger attackID = new AtomicInteger(1);
     public static Map<Integer, String> attackResults = new HashMap<Integer, String>();
     public static String attackMethod;
+    public static boolean dictionaryAttackOutOfWords = false;
+    public static int benchmark = 500;
+    public static int switchBenchmark;
 	
-	public static int decideAttackSequenceForClient(String deviceID)
+	public static int decideAttackSequenceForNode(String deviceID)
 	{
 		Device temp = UserController.nodes.get(deviceID);
 		temp.setHealthBeats(System.currentTimeMillis());
@@ -40,5 +43,14 @@ public class AttackController {
 	public static void runHealthChecks()
 	{
 		HealthCheck.startHealthCheckThread(); // Initiate the health check cycle for devices to identify timeout/downed nodes
+	}
+	
+	public static void updateBenchmark()
+	{
+		if(switchBenchmark > benchmark)
+		{
+			benchmark = switchBenchmark;
+			System.out.println("Benchmark changed to : " + benchmark);
+		}
 	}
 }
