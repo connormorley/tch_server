@@ -436,3 +436,50 @@ java.net.ConnectException: Connection timed out: connect
 Last packet sent to the server was 0 ms ago.
 SEVERE 09-30-2016 20:27:21 || [Start]There was an error with the SQL configuration or address, please confirm details.
 SEVERE 09-30-2016 20:27:21 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. System shutting down.
+SEVERE 02-10-2017 23:03:32 || [SQL]Connection information issue, either driver or address : java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+SEVERE 02-10-2017 23:03:32 || [Start]There was an error with the SQL configuration or address, please confirm details.
+SEVERE 02-10-2017 23:03:32 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. System shutting down.
+SEVERE 02-10-2017 23:43:38 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Force, 1486770218040, 'yes')' at line 1
+SEVERE 02-10-2017 23:48:44 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'attackStart' in 'field list'
+SEVERE 02-10-2017 23:54:48 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'attackRunning' in 'field list'
+SEVERE 02-11-2017 00:01:03 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException: Duplicate entry '2' for key 'PRIMARY'
+SEVERE 02-11-2017 00:12:12 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'last_completed_arn' in 'field list'
+SEVERE 02-11-2017 00:12:15 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'last_completed_arn' in 'field list'
+SEVERE 02-11-2017 00:19:03 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Table 'tcrunch_test.arn_sequqnce' doesn't exist
+SEVERE 02-11-2017 00:19:45 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Table 'tcrunch_test.arn_sequence' doesn't exist
+SEVERE 02-11-2017 00:20:02 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Table 'tcrunch_test.arn_sequence' doesn't exist
+SEVERE 02-11-2017 00:20:33 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'failed_arn' in 'field list'
+SEVERE 02-11-2017 00:26:50 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'delect from failed_sequences where failed_arn = 0' at line 1
+SEVERE 02-11-2017 00:30:08 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Table 'tcrunch_test.failed_sequences' doesn't exist
+SEVERE 02-11-2017 00:58:05 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'AEC57384D89151D40591C442191070D3731371E26970D039B5BD85BC3D681D275A73F438459EA5C0C9021B4D85B3BD10958ED933A9802CCC3B148B6B298991DB8CEB5532704E08B59D9B670FCCDCDF4E94607139D892373933CBECB996E4802A' in 'field list'
+SEVERE 02-11-2017 01:00:12 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'AEC57384D89151D40591C442191070D3731371E26970D039B5BD85BC3D681D275A73F438459EA5C0C9021B4D85B3BD10958ED933A9802CCC3B148B6B298991DB8CEB5532704E08B59D9B670FCCDCDF4E94607139D892373933CBECB996E4802A' in 'field list'
+SEVERE 02-11-2017 01:14:45 || [SQL]Query error while retrieving custom dataset 
+Error is : java.sql.SQLException: Can not issue SELECT via executeUpdate().
+SEVERE 02-11-2017 01:14:56 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException: Duplicate entry '0' for key 'failed_arn'
+SEVERE 02-11-2017 01:26:44 || [SQL]Query error while retrieving custom dataset 
+Error is : java.sql.SQLException: Column Index out of range, 0 < 1.
+SEVERE 02-11-2017 01:26:54 || [SQL]Query error while retrieving custom dataset 
+Error is : java.sql.SQLException: Column Index out of range, 0 < 1.
+SEVERE 02-11-2017 01:27:57 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException: Duplicate entry '0' for key 'arn'
+SEVERE 02-11-2017 01:31:00 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException: Duplicate entry '0' for key 'arn'
+SEVERE 02-11-2017 01:36:01 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ignore' at line 1
+SEVERE 02-13-2017 16:02:19 || [SQL]Query error while retrieving custom dataset 
+Error is : com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'Z' in 'field list'

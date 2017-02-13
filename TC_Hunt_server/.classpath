@@ -23,18 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-api-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-api-internal-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-client.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-cluster-client-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-cluster-common-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-cluster-diagnostics-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-cluster-node-model-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-data-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-data-internal-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-runtime-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-util-2.0.1.jar"/>
-	<classpathentry kind="lib" path="oustideJar/geneos-openaccess-xpath-2.0.1.jar"/>
 	<classpathentry kind="lib" path="oustideJar/httpclient-4.5.1.jar"/>
 	<classpathentry kind="lib" path="oustideJar/httpclient-cache-4.5.1.jar"/>
 	<classpathentry kind="lib" path="oustideJar/httpclient-win-4.5.1.jar"/>
@@ -44,5 +32,7 @@
 	<classpathentry kind="lib" path="oustideJar/org.json.jar"/>
 	<classpathentry kind="lib" path="oustideJar/mail.jar"/>
 	<classpathentry kind="lib" path="oustideJar/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="libs/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="libs/commons-lang3-3.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
