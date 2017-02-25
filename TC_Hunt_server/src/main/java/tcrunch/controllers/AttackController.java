@@ -20,7 +20,7 @@ public class AttackController {
     public static String attackMethod;
     public static boolean dictionaryAttackOutOfWords = false;
     public static int benchmark = 500;
-    public static int switchBenchmark;
+    public static int switchBenchmark = 0;
 	
 	public static int decideAttackSequenceForNode(String deviceID)
 	{
@@ -51,7 +51,7 @@ public class AttackController {
 	
 	public static void updateBenchmark()
 	{
-		if(switchBenchmark > benchmark)
+		if(switchBenchmark < benchmark && switchBenchmark != 0)
 		{
 			benchmark = switchBenchmark;
 			System.out.println("Benchmark changed to : " + benchmark);

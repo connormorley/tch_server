@@ -23,30 +23,29 @@ public class EmailController {
     private static String PORT;
     static LtA logA = new LogObject();
 
-    public static void sendMail(String username, int random, String android_id) throws Exception{
-       new EmailController().send(username, random, android_id);
+    public static void sendMail(int id, String res) throws Exception{
+       new EmailController().send(id, res);
     }
 
-    public void send(String username, int random, String android_id){
+    public void send(int ID, String res){
     	try{
         Properties props = new Properties();
         props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", SMTP_HOST_NAME);
         props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "587");
 
         Authenticator auth = new SMTPAuthenticator();
         Session mailSession = Session.getDefaultInstance(props, auth);
-        // uncomment for debugging infos to stdout
-        // mailSession.setDebug(true);
         Transport transport = mailSession.getTransport();
 
         MimeMessage message = new MimeMessage(mailSession);
-        message.setSubject("Geneos Notifier Device Verification");
-        message.setContent("Hello " +username+ ", \n\n Please follow the attached link to verify you device \n\n https://" + IP + 
-        		":" + PORT + "/verifydev?dev_id=" + android_id + "&verification="+random, "text/plain");
-        message.setFrom(new InternetAddress("helpdeskautomation@itrsgroup.com"));
+        message.setSubject("Test result Id : " + ID);
+        message.setContent("Hello, \nThe attack with ID : " + ID + " has concluded. \nThe result was : " + res, "text/plain");
+        message.setFrom(new InternetAddress("tcrunchserver@gmail.com"));
         message.addRecipient(Message.RecipientType.TO,
-             new InternetAddress(username));
+             new InternetAddress("mc384@greenwich.ac.uk"));
 
         transport.connect();
         transport.sendMessage(message,
@@ -54,7 +53,7 @@ public class EmailController {
         transport.close();
     	}
     	catch(Exception e){
-    		logA.doLog("Email" , "[Email]Error in creation/transmission of Email to user : " + username + " \nError is : " + e.toString(), "Critical");
+    		logA.doLog("Email" , "[Email]Error in creation/transmission of Email \nError is : " + e.toString(), "Critical");
     	}
     }
 

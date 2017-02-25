@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class LogHandler {
 
-	 private static String LOG_FILE_NAME = "NotificationServer.log";
+	 private static String LOG_FILE_NAME = "TCrunchServer.log";
      static Hashtable<String, Logger> loggers = new Hashtable<String, Logger>();
      static FileHandler handler = null;
      public static int limit;
@@ -54,8 +54,8 @@ public class LogHandler {
     		 lvl = Level.SEVERE;
     	 if(level.equals("warning"))
     		 lvl = Level.WARNING;
-    	if(level.equals("all"))
-    		lvl = Level.ALL;
+    	 if(level.equals("all"))
+    		 lvl = Level.ALL;
      }
 	
 }

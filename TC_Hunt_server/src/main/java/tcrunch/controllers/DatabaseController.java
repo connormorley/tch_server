@@ -15,22 +15,22 @@ import tccrunch.threads.HealthCheck;
 public class DatabaseController {
 	
   private static String address = null;
-  private static Connection conn = null;
-  private static Statement stmt = null;
-  private static ResultSet res = null;
-  private static ResultSet res1 = null;
+  //private static Connection conn = null;
+ // private static Statement stmt = null;
+  //private static ResultSet res = null;
+  //private static ResultSet res1 = null;
   public static Random random = new Random(System.currentTimeMillis());
   static LtA logA = new LogObject();
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
   
-  public static void SQLConnect(){
+  public static Connection SQLConnect(){
     try {
       // This will load the MySQL driver, each DB has its own driver
       Class.forName("com.mysql.jdbc.Driver");
       // Setup the connection with the DB
-      conn = DriverManager
+      return DriverManager
           .getConnection(address);
     }
     catch(Exception e)
@@ -45,17 +45,18 @@ public class DatabaseController {
 ///////////////////////////////////////////////////////////////////////////////////
 
 public static void execCustom(String query) {
-	SQLConnect();
+	Connection conn = SQLConnect();
 	try {
+		Statement stmt = null;
 		stmt = conn.createStatement();
 		stmt.executeUpdate(query);
 	} catch (SQLException e) {
 		logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(), "Critical");
 		e.printStackTrace();
-		close();
+		close(conn);
 		throw new RuntimeException(e);
 	} 
-		close();
+		close(conn);
 	
 
 }
@@ -64,13 +65,15 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static boolean checkRecoveredAttack() {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "select * from attack_information where attack_running like 'yes';";
 			res = stmt.executeQuery(query);
 			if (!res.isBeforeFirst()) {
-				close();
+				close(conn);
 				return false;
 			}
 			int aID = 0;
@@ -98,15 +101,14 @@ public static void execCustom(String query) {
 			AttackController.attackMethod = method;
 			AttackController.failedSequences.clear();
 			AttackController.attackID = new AtomicInteger(aID);
-			HealthCheck.startHealthCheckThread();
 		} catch (SQLException e) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return true;
 	}
 	
@@ -114,13 +116,15 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void checkForRecoveredFailedSequences() {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "select failed_arn from failed_sequences where attack_id like " + AttackController.attackID.get() + ";";
 			res = stmt.executeQuery(query);
 			if (!res.isBeforeFirst()) {
-				close();
+				close(conn);
 				return;
 			}
 			while (res.next()) {
@@ -130,37 +134,38 @@ public static void execCustom(String query) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 }
 	
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
-	public static void getLatAID() {
-		SQLConnect();
+	public static void getLastAID() {
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "select attack_id from attack_information order by attack_id desc;";
 			res = stmt.executeQuery(query);
 			if (!res.isBeforeFirst()) {
-				close();
+				close(conn);
 				return;
 			}
-			while (res.next()) {
-				AttackController.attackID.set(res.getInt(1));
-			}
+			res.next();
+			AttackController.attackID.set(res.getInt(1));
 		} catch (SQLException e) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 	}
 	
@@ -168,8 +173,10 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void addARNCheck(int arn) {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "insert ignore into arn_sequences(attack_id, arn) values("
 					+ AttackController.attackID.get() + ", " + arn + " );";
@@ -178,10 +185,10 @@ public static void execCustom(String query) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 	}
 	
@@ -189,8 +196,10 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void removeARNCheck(int arn) {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "delete from arn_sequences where arn = " + arn;
 			stmt.executeUpdate(query);
@@ -198,29 +207,31 @@ public static void execCustom(String query) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 	}
 	
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void addFailedSequence(int arn) {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
-			String query = "insert into failed_sequences(attack_id, failed_arn) values(" + AttackController.attackID.get() + ", " + arn + " );";
+			String query = "insert ignore into failed_sequences(attack_id, failed_arn) values(" + AttackController.attackID.get() + ", " + arn + " );";
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 	}
 	
@@ -228,8 +239,10 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void removeFailedSequence(int arn) {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "delete from failed_sequences where failed_arn = " + arn;
 			stmt.executeUpdate(query);
@@ -237,10 +250,10 @@ public static void execCustom(String query) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 	}
 	
@@ -248,8 +261,10 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void addAndStartAttackInformation() {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "insert into attack_information(attack_id, balance_value, attack_method, attack_Start, attack_Running)"
 					+ " values(" + AttackController.attackID.get() + ", " + AttackController.benchmark + ", '" + AttackController.attackMethod + "', " + System.currentTimeMillis() + ", 'yes');";
@@ -258,10 +273,10 @@ public static void execCustom(String query) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 	}
 	
@@ -269,19 +284,23 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void enterCompleteInformation(String result) {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
+			result = result.replaceAll("\\\\", "\\\\\\\\");
+			result = result.replaceAll("\"", "\\\\\"");
 			String query = "update attack_information set attack_stop="+System.currentTimeMillis()+", attack_result='"+result+"' where attack_id="+AttackController.attackID.get()+";";
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 	}
 	
@@ -289,8 +308,10 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 	public static void endAttack() {
-		SQLConnect();
+		Connection conn = SQLConnect();
 		try {
+			Statement stmt = null;
+			ResultSet res = null;
 			stmt = conn.createStatement();
 			String query = "update attack_information set attack_running='no' where attack_id = " + AttackController.attackID.get();
 			stmt.executeUpdate(query);
@@ -298,10 +319,10 @@ public static void execCustom(String query) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
 			e.printStackTrace();
-			close();
+			close(conn);
 			throw new RuntimeException(e);
 		}
-		close();
+		close(conn);
 		return;
 	}
 	
@@ -328,16 +349,8 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
-  public static void close() {
+  public static void close(Connection conn) {
     try {
-      if (res != null) {
-        res.close();
-      }
-
-      if (stmt != null) {
-        stmt.close();
-      }
-
       if (conn != null) {
         conn.close();
       }

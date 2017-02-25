@@ -8,9 +8,9 @@ mySQL Host			=localhost
 mySQL Database Name =tcrunch_test
 mySQL Username 		=tester
 mySQL Password		=iPods123
-SMTP Host			=smtp.hostedservice2.net
-SMTP Username		=HelpdeskAutomation@itrsgroup.com
-SMTP Password		=9AHNekkeJwUE7XD
+SMTP Host			=smtp.gmail.com
+SMTP Username		=tcrunchserver@gmail.com
+SMTP Password		=iPods123
 Maximum Log Size	=1024000
 Log Level 			=warning
 

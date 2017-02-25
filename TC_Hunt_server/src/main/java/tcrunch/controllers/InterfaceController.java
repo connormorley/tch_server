@@ -19,6 +19,7 @@ import java.io.FileWriter;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +37,14 @@ import tccrunch.threads.HealthCheck;
 public class InterfaceController {
 
     private static String sqlKey;
-    private static String serverPassword = "test";
+    public static String serverPassword = "test";
     public static int sampleRate;
     public static ArrayList<JSONObject> currentDataviewEntityList;
+    private final static Logger logger = Logger.getLogger(InterfaceController.class.getName());
+    private static LtA logA = new LogObject();
     public static int userWordlistsExpired = 0;
-    static LtA logA = new LogObject();
+    public static boolean emailNotify = false;
+    public static boolean recovering = false;
 
     
     
@@ -53,8 +57,15 @@ public class InterfaceController {
     public static String attackCheck(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
     {
 		if (password.equals(serverPassword)) 
-			return UserController.attackCheck(deviceID); // Returns either yes or no as indication if an attack is running
-			else
+			{
+				if(recovering)
+				{
+					HealthCheck.startHealthCheckThread();
+					recovering = false;
+				}
+				return UserController.attackCheck(deviceID); // Returns either yes or no as indication if an attack is running
+			}
+		else
 			return "Unauthorised access";
     }
     
@@ -234,6 +245,8 @@ public class InterfaceController {
 			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " had been identified as : " + result, "Info");
 			System.out.println("password is " + result);
 			userWordlistsExpired = 0;
+			if(emailNotify)
+			EmailController.sendMail(AttackController.attackID.get(), result);
 			AttackController.updateBenchmark();
 			DatabaseController.enterCompleteInformation(result);
 			DatabaseController.endAttack();
@@ -257,6 +270,8 @@ public class InterfaceController {
 			AttackController.runningAttack = false;
 			AttackController.attackResults.put(AttackController.attackID.get(), "Wordlist Exhausted");
 			AttackController.dictionaryAttackOutOfWords = false; //TEST
+			if(emailNotify)
+			EmailController.sendMail(AttackController.attackID.get(), "Wordlist Exhausted");
 			AttackController.updateBenchmark();
 			DatabaseController.enterCompleteInformation("Wordlist Exhausted");
 			DatabaseController.endAttack();
@@ -279,6 +294,8 @@ public class InterfaceController {
 			AttackController.updateBenchmark();
 			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " has been manually termianted by user.", "Info");
 			System.out.println("Attack was manually terminated by user");
+			if(emailNotify)
+			EmailController.sendMail(AttackController.attackID.get(), "Manually terminated");
 			DatabaseController.enterCompleteInformation("User abort.");
 			DatabaseController.endAttack();
 		} else
