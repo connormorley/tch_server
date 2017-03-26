@@ -1,5 +1,6 @@
 package tccrunch.threads;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -31,15 +32,18 @@ public class HealthCheck {
 				Thread.currentThread().sleep(7500);
 			while(AttackController.runningAttack == true) // For as long as the attack is running carry out health check
 			{
-				for(Map.Entry<String, Device> devEntry : UserController.nodes.entrySet())
+				//for(Map.Entry<String, Device> devEntry : UserController.nodes.entrySet())
+				for(Iterator<Map.Entry<String, Device>> iteration = UserController.nodes.entrySet().iterator(); iteration.hasNext();)
 				{
-					if(devEntry.getValue().getHealthBeats() < (System.currentTimeMillis() - 10000))
+					Map.Entry<String, Device> devEntry = iteration.next();
+					if(devEntry.getValue().getHealthBeats() < (System.currentTimeMillis() - 15000))
 					{
 						AttackController.failedSequences.add(devEntry.getValue().getAttackSequence());
 						DatabaseController.addFailedSequence(devEntry.getValue().getAttackSequence());
 						DatabaseController.removeARNCheck(devEntry.getValue().getAttackSequence());
 						System.out.println("Node: '" + devEntry.getKey() + "' has been removed and the attack sequence '" + devEntry.getValue().getAttackSequence() + "' has been added to the failed sequences.");
-						UserController.nodes.remove(devEntry.getKey());
+						iteration.remove();
+						//UserController.nodes.remove(devEntry.getKey());
 						if(UserController.nodes.size() == InterfaceController.userWordlistsExpired)
 						{
 							InterfaceController.userWordlistsExpired = 0;
@@ -51,6 +55,11 @@ public class HealthCheck {
 			}
 			return 1;
 			} catch (InterruptedException e) {
+				return 1;
+			} catch(Exception e)
+			{
+				e.printStackTrace();
+				AttackController.runHealthChecks();
 				return 1;
 			}
 		}

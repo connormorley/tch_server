@@ -176,15 +176,16 @@ public class InterfaceController {
 	@RequestMapping(value="/healthCheck", method=RequestMethod.POST)		
 	public static String healthCheck(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
 	{
+		String ret = "";
 		if (AttackController.runningAttack == false)
 		{
 			return "abort";
 		}
 	    else if (password.equals(serverPassword)) {
-		UserController.healthUpdate(deviceID); // Updates the health time of the device, this is used to indicate when it last checked in with the server for timeout control.
-		return "";
+		ret = UserController.healthUpdate(deviceID); // Updates the health time of the device, this is used to indicate when it last checked in with the server for timeout control.
+		return ret;
 		} else
-		return "";
+		return ret;
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -25,22 +25,41 @@ public class AttackController {
 	public static int decideAttackSequenceForNode(String deviceID)
 	{
 		Device temp = UserController.nodes.get(deviceID);
-		temp.setHealthBeats(System.currentTimeMillis());
-		if(!failedSequences.isEmpty())
+		String storedARN = DatabaseController.checkDev(deviceID);
+		
+		if(storedARN.equals("none"))
 		{
-			int arn = failedSequences.get(0);
-			temp.setAttackSequence(arn); // If there are any entries in the failedSequences use them first
-			DatabaseController.removeFailedSequence(arn);
-			DatabaseController.addARNCheck(arn);
-			failedSequences.remove(0);
-			return temp.getAttackSequence();
+			try{
+			temp.setHealthBeats(System.currentTimeMillis());
+			if(!failedSequences.isEmpty())
+			{
+				int arn = failedSequences.get(0);
+				temp.setAttackSequence(arn); // If there are any entries in the failedSequences use them first
+				DatabaseController.removeFailedSequence(arn);
+				DatabaseController.addARNCheck(arn, deviceID);
+				failedSequences.remove(0);
+				return temp.getAttackSequence();
+			}
+			else
+			{
+				int seq = currentSequence.getAndIncrement();
+				temp.setAttackSequence(seq);
+				DatabaseController.addARNCheck(seq, deviceID);
+				return seq; // If there are no failed sequences, issue newest sequence.
+			}
+			} catch(Exception e)
+			{
+				System.out.println("Device ID : " + deviceID + " tried to connect but was not present in internal census. Re-connection issued to node.");
+				return -1;
+			}
 		}
 		else
 		{
-			int seq = currentSequence.getAndIncrement();
-			temp.setAttackSequence(seq);
-			DatabaseController.addARNCheck(seq);
-			return seq; // If there are no failed sequences, issue newest sequence.
+			int retArn = Integer.parseInt(storedARN);
+			temp.setHealthBeats(System.currentTimeMillis());
+			temp.setAttackSequence(retArn);
+			DatabaseController.addARNCheck(retArn, deviceID);
+			return retArn;
 		}
 	}
 	

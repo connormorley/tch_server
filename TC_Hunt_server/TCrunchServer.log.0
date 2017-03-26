@@ -1,0 +1,42 @@
+SEVERE 03-02-2017 15:46:28 || [SQL]Connection information issue, either driver or address : com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.ConnectException
+MESSAGE: Connection refused: connect
+
+STACKTRACE:
+
+java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.doConnect(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+	at java.net.PlainSocketImpl.connect(Unknown Source)
+	at java.net.SocksSocketImpl.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.connect(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at java.net.Socket.<init>(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:256)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:271)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2771)
+	at com.mysql.jdbc.Connection.<init>(Connection.java:1555)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:285)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at tcrunch.controllers.DatabaseController.SQLConnect(DatabaseController.java:34)
+	at tcrunch.controllers.StartController.checkValidity(StartController.java:224)
+	at tcrunch.controllers.StartController.configureSetting(StartController.java:184)
+	at tcrunch.controllers.StartController.start(StartController.java:86)
+	at tcrunch.controllers.StartController.main(StartController.java:81)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+SEVERE 03-02-2017 15:46:28 || [Start]There was an error with the SQL configuration or address, please confirm details.
+SEVERE 03-02-2017 15:46:28 || [Start]Boot configuration error was encountered, please confirm settings and re-try boot. - TERMINATING

@@ -10,6 +10,7 @@ public class Device {
 	public Device(String d_id)
 	{
 		this.deviceID = d_id;
+		this.setHealthBeats(System.currentTimeMillis());
 	}
 
 	private String getDeviceID() {

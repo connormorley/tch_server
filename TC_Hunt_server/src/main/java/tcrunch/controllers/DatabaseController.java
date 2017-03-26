@@ -120,6 +120,7 @@ public static void execCustom(String query) {
 		try {
 			Statement stmt = null;
 			ResultSet res = null;
+			int arnSet = 0;
 			stmt = conn.createStatement();
 			String query = "select failed_arn from failed_sequences where attack_id like " + AttackController.attackID.get() + ";";
 			res = stmt.executeQuery(query);
@@ -129,7 +130,11 @@ public static void execCustom(String query) {
 			}
 			while (res.next()) {
 				AttackController.failedSequences.add(res.getInt(1));
+				if(arnSet < res.getInt(1))
+					arnSet = res.getInt(1);
 			}
+			if(AttackController.currentSequence.get() == 0)
+				AttackController.currentSequence = new AtomicInteger(arnSet + 1);
 		} catch (SQLException e) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
 					"Critical");
@@ -140,6 +145,37 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 }
+	
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+
+	public static String checkDev(String deviceID) {
+		Connection conn = SQLConnect();
+		int arnSet = 00;
+		try {
+			Statement stmt = null;
+			ResultSet res = null;
+			stmt = conn.createStatement();
+			String query = "select arn from arn_sequences where devid like '"
+					+ deviceID + "';";
+			res = stmt.executeQuery(query);
+			if (!res.isBeforeFirst()) {
+				close(conn);
+				return "none";
+			}
+			while (res.next()) {
+				arnSet = res.getInt(1);
+			}
+		} catch (SQLException e) {
+			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
+					"Critical");
+			e.printStackTrace();
+			close(conn);
+			throw new RuntimeException(e);
+		}
+		close(conn);
+		return Integer.toString(arnSet);
+	}
 	
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
@@ -172,14 +208,14 @@ public static void execCustom(String query) {
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
-	public static void addARNCheck(int arn) {
+	public static void addARNCheck(int arn, String deviceID) {
 		Connection conn = SQLConnect();
 		try {
 			Statement stmt = null;
 			ResultSet res = null;
 			stmt = conn.createStatement();
-			String query = "insert ignore into arn_sequences(attack_id, arn) values("
-					+ AttackController.attackID.get() + ", " + arn + " );";
+			String query = "insert ignore into arn_sequences(attack_id, arn, devid) values("
+					+ AttackController.attackID.get() + ", " + arn + ", '"+ deviceID +"' );";
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
