@@ -9,6 +9,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import tccrunch.objects.Device;
 import tccrunch.threads.HealthCheck;
 
+/*	Created by:		Connor Morley
+ * 	Title:			TCrunch Server Attack Control Class
+ *  Version update:	2.1
+ *  Notes:			Class is used to discern which ARN to issue to each node on poll to the server when an attack is running. Class also maintains the current balance
+ *  				value of the cluster and initiates the health check thread when an attack is issued.
+ *  
+ *  References:		N/A
+ */
+
 public class AttackController {
 
 	public static AtomicInteger currentSequence;

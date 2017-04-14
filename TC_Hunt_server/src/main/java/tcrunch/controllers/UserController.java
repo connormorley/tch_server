@@ -5,9 +5,17 @@ import java.util.Map;
 
 import tccrunch.objects.Device;
 
+/*	Created by:		Connor Morley
+ * 	Title:			TCrunch Server User Controller
+ *  Version update:	2.4
+ *  Notes:			Class is used to create and handle Device objects and provide attack ID of running attack at time of poll. Class is also responsible for updating 
+ *  				device objects health values which are used within the health checker thread to ensure nodes do not time out. 
+ *  
+ *  References:		N/A
+ */
+
 public class UserController {
 	
-	//public static ArrayList<String> nodes = new ArrayList<String>();
 	public static Map<String, Device> nodes = new HashMap<String, Device>();
 	
 	public static String attackCheck(String deviceID) {

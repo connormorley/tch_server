@@ -31,25 +31,29 @@ import tccrunch.loggers.LogObject;
 import tccrunch.loggers.LtA;
 import tccrunch.threads.HealthCheck;
 
-
+/*	Created by:		Connor Morley
+ * 	Title:			TCrunch Server RESTFul interface class
+ *  Version update:	2.3
+ *  Notes:			Class is responsible for defining REST interface commands and their associated arguments. This is the core class of the server and dictates 
+ *  				the interaction of other system components. Each method is related to a request map which specifies the input command necessary for the server
+ *  				to provide the appropriate function and output. This class provides the interface specifications for the server as well as checks for each operation
+ *  				and provides error relative output should issues occur. 
+ *  
+ *  References:		N/A
+ */
 
 @RestController
 public class InterfaceController {
 
     private static String sqlKey;
-    public static String serverPassword = "test";
+    public static String serverPassword = "test"; //For future development options.
     public static int sampleRate;
     public static ArrayList<JSONObject> currentDataviewEntityList;
     private final static Logger logger = Logger.getLogger(InterfaceController.class.getName());
     private static LtA logA = new LogObject();
     public static int userWordlistsExpired = 0;
     public static boolean emailNotify = false;
-    public static boolean recovering = false;
-
-    
-    
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////    	
+    public static boolean recovering = false;  	
     
     //Used to check if an attack is in progress to initiate the node into an attack mode instead of idle,
     //additionally is first instance where the attack node is registered with the server for reference.
@@ -68,9 +72,6 @@ public class InterfaceController {
 		else
 			return "Unauthorised access";
     }
-    
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value = "/clientAttackCheck", method = RequestMethod.POST)
 	public static String clientAttackCheck(@RequestParam(value = "deviceid", defaultValue = "") String deviceID,
@@ -83,9 +84,6 @@ public class InterfaceController {
 		else
 			return "Unauthorised access";
 	}
-    
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //This is used by the client to poll if the attack has generated a result or not depending on the attackID issued at initiation.
     @RequestMapping(value="/resultCheck", method=RequestMethod.POST)		
@@ -102,9 +100,6 @@ public class InterfaceController {
     	else
     		return "Unauthorised access";
 	}
-     
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value = "/getJobBlock", method = RequestMethod.POST)
 	public static String getJobBlock(@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
@@ -114,9 +109,6 @@ public class InterfaceController {
 					return null;
 
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value = "/issueBenchmark", method = RequestMethod.POST)
 	public static void issueBenchmark(@RequestParam(value = "password", defaultValue = "") String password, @RequestParam(value = "benchmark", defaultValue = "") String benchmark)
@@ -132,23 +124,16 @@ public class InterfaceController {
 				AttackController.switchBenchmark = Integer.parseInt(benchmark);
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	@RequestMapping(value = "/getARN", method = RequestMethod.POST)
 	public static String getARN(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value = "password", defaultValue = "") String password) throws Exception {
 				if(password.equals(serverPassword))
 				{
 					int arn = AttackController.decideAttackSequenceForNode(deviceID);
-					//DatabaseController.updateCurrentArn(arn);
 					return Integer.toString(arn); // Checks if the device is registered and returns the attack sequence for that device.
 				}
 				else
 					return "0"; // If device is unauthorised nothing is issued against device id so returned value is irrelevant
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value = "/getBalance", method = RequestMethod.POST)
 	public static String getBalance(
@@ -158,9 +143,6 @@ public class InterfaceController {
 		else
 			return "0";
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value = "/getAttackMethod", method = RequestMethod.POST)
 	public static String getAttackMethod(@RequestParam(value = "deviceid", defaultValue = "") String deviceID, @RequestParam(value = "password", defaultValue = "") String password) throws Exception {
@@ -169,9 +151,6 @@ public class InterfaceController {
 		else
 			return "0"; 
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value="/healthCheck", method=RequestMethod.POST)		
 	public static String healthCheck(@RequestParam(value="deviceid", defaultValue="") String deviceID, @RequestParam(value="password", defaultValue="") String password) throws Exception 
@@ -187,55 +166,28 @@ public class InterfaceController {
 		} else
 		return ret;
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value="/issueAttack", method=RequestMethod.POST)		
 	public static String issueAttack(@RequestParam(value="attackblock", defaultValue="") String attackBlock, @RequestParam(value="password", defaultValue="") String password, @RequestParam(value="attackmethod", defaultValue="") String attackMethod) throws Exception 
 	{
 		if (password.equals(serverPassword)){
-			//System.out.println("command received " + password + "   " + attackBlock);
-		AttackController.target = attackBlock; // Updates the health time of the device, this is used to indicate when it last checked in with the server for timeout control.
-		
-		File file = new File("testingTCFile");
-		FileWriter fileWriter = new FileWriter(file);
-		fileWriter.write(attackBlock);
-		fileWriter.flush();
-		fileWriter.close();
-		
-		
-/*		int len = attackBlock.length();
-	    byte[] data = new byte[len / 2];
-	    for (int i = 0; i < len; i += 2) {
-	        data[i / 2] = (byte) ((Character.digit(attackBlock.charAt(i), 16) << 4)
-	                             + Character.digit(attackBlock.charAt(i+1), 16));
-	    }
-		
-		//byte[] finalbytes = attackBlock.getBytes("ISO-8859-1");
-		File outputFile = new File("testingTCFile");
-		    try ( FileOutputStream outputStream = new FileOutputStream(outputFile); ) {
-		        outputStream.write(attackBlock, 0, attackBlock.length());  //write the bytes and your done. 
-		        outputStream.flush();
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }*/
-		
-		AttackController.runningAttack = true;
-		AttackController.currentSequence = new AtomicInteger(0);
-		AttackController.attackMethod = attackMethod;
-		AttackController.failedSequences.clear();
-		//AttackController.attackID = new AtomicInteger(1); //?
-		AttackController.attackID.incrementAndGet();
-		DatabaseController.addAndStartAttackInformation();
-		HealthCheck.startHealthCheckThread();
-		return Integer.toString(AttackController.attackID.get());
+			AttackController.target = attackBlock; // Updates the health time of the device, this is used to indicate when it last checked in with the server for timeout control.
+			File file = new File("testingTCFile");
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(attackBlock);
+			fileWriter.flush();
+			fileWriter.close();
+			AttackController.runningAttack = true;
+			AttackController.currentSequence = new AtomicInteger(0);
+			AttackController.attackMethod = attackMethod;
+			AttackController.failedSequences.clear();
+			AttackController.attackID.incrementAndGet();
+			DatabaseController.addAndStartAttackInformation();
+			HealthCheck.startHealthCheckThread();
+			return Integer.toString(AttackController.attackID.get());
 		} else
-		return "0";
+			return "0";
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Indicate to the server to stop the running attack, stores the found password in association with the attack ID within the system for retrieval by the client.
 	@RequestMapping(value = "/passwordFound", method = RequestMethod.POST)
@@ -251,13 +203,10 @@ public class InterfaceController {
 			AttackController.updateBenchmark();
 			DatabaseController.enterCompleteInformation(result);
 			DatabaseController.endAttack();
-			AttackController.dictionaryAttackOutOfWords = false; // TEST
+			AttackController.dictionaryAttackOutOfWords = false;
 		} else
 			return;
 		}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Indicate to the server to stop the running attack, marks the attack as exhausting the wordlist available.
 	@RequestMapping(value = "/wordlistExhausted", method = RequestMethod.POST)
@@ -265,12 +214,12 @@ public class InterfaceController {
 		if (password.equals(serverPassword)) {
 			userWordlistsExpired++;
 			if(AttackController.dictionaryAttackOutOfWords == false)
-				AttackController.dictionaryAttackOutOfWords = true; // TEST
+				AttackController.dictionaryAttackOutOfWords = true;
 			if(userWordlistsExpired == UserController.nodes.size())
 			{
 			AttackController.runningAttack = false;
 			AttackController.attackResults.put(AttackController.attackID.get(), "Wordlist Exhausted");
-			AttackController.dictionaryAttackOutOfWords = false; //TEST
+			AttackController.dictionaryAttackOutOfWords = false;
 			if(emailNotify)
 			EmailController.sendMail(AttackController.attackID.get(), "Wordlist Exhausted");
 			AttackController.updateBenchmark();
@@ -281,9 +230,6 @@ public class InterfaceController {
 		} else
 			return;
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Indicate to the server to stop the running attack, marks the result of the scan as "user aborted". 
 	@RequestMapping(value = "/abortAttack", method = RequestMethod.POST)
@@ -291,7 +237,7 @@ public class InterfaceController {
 		if (password.equals(serverPassword)) {
 			AttackController.runningAttack = false;
 			AttackController.attackResults.put(AttackController.attackID.get(), "User Aborted");
-			AttackController.dictionaryAttackOutOfWords = false; // TEST
+			AttackController.dictionaryAttackOutOfWords = false;
 			AttackController.updateBenchmark();
 			logA.doLog("INTERFACE" , "[INTERFACE]Password for attack sequence " + AttackController.attackID.get() + " has been manually termianted by user.", "Info");
 			System.out.println("Attack was manually terminated by user");
@@ -302,10 +248,6 @@ public class InterfaceController {
 		} else
 			return;
 		}
-	
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value = "/attackID", method = RequestMethod.POST)
 	public static String checkAttackID(@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
@@ -315,9 +257,6 @@ public class InterfaceController {
 			return "0"; 
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	@RequestMapping(value = "/checkLive", method = RequestMethod.POST)
 	public static String test(@RequestParam(value = "password", defaultValue = "") String password) throws Exception {
 		if (password.equals(serverPassword)) {
@@ -325,9 +264,6 @@ public class InterfaceController {
 		} else
 			return "";
 	}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public static void setKeyData(String sql)
     {

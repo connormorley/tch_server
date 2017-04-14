@@ -13,6 +13,15 @@ import javax.mail.internet.MimeMessage;
 import tccrunch.loggers.LogObject;
 import tccrunch.loggers.LtA;
 
+/*	Created by:		Connor Morley
+ * 	Title:			TCrunch Server Email Service Controller
+ *  Version update:	2.0
+ *  Notes:			Class is responsible for handling the email notifications issued when an attack operation is concluded. Emails are sent from a configured gmail 
+ *  				account made specifically for the server. The destination address is specified in the settings properties file associated with the server. Email
+ *  				notifications contain the id of the attack that has finished and the result of the attack operation.
+ *  
+ *  References:		N/A
+ */
 
 public class EmailController {
 

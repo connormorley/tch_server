@@ -11,6 +11,16 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+/*	Created by:		Connor Morley
+ * 	Title:			Default Logger Handler
+ *  Version update:	1.5
+ *  Notes:			Class created to handle logging configuration and commands. Class is identical across all system components. Class has
+ *  				been included in order to support system logging, does not guarantee logging has been established throughout system
+ *  				appropriately. 
+ *  
+ *  References:		N/A
+ */
+
 public class LogHandler {
 
 	 private static String LOG_FILE_NAME = "TCrunchServer.log";
@@ -38,7 +48,6 @@ public class LogHandler {
                              + record.getMessage() + "\n";
                  }
              });
-             //handler.setFormatter(new SimpleFormatter());
          }
 
          Logger logger = Logger.getLogger(loggerName);

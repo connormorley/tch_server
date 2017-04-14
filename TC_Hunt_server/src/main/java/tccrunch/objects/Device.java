@@ -1,5 +1,14 @@
 package tccrunch.objects;
 
+/*	Created by:		Connor Morley
+ * 	Title:			TCrunch Server Device Object
+ *  Version update:	2.2
+ *  Notes:			Object class is used as a representation of attached nodes and contains their relative information. These objects are then catalogued against
+ *  				individual ID criteria provided by the node for easy retrieval and reference during communication and organsisation by the server.
+ *  
+ *  References:		N/A
+ */
+
 public class Device {
 	
 	private String deviceID;

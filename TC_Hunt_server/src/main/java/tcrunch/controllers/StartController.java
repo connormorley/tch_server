@@ -28,12 +28,12 @@ import tccrunch.loggers.LtA;
 /*	Created by:		Connor Morley
  *  Date:			27/01/2017
  * 	Title:			TCrunch Control Server
- *  Version:		1.6
- *  Notes:			Main class - Controls settings file read and configuration and prelinary checks before enabling the server to outside communication.
+ *  Version:		2.3
+ *  Notes:			Main class - Controls settings file read and configuration and preliminary checks before enabling the server to establish outside communication.
  *  
  *  References:		> "File > New > Import Spring Getting Started Content > Rest Server" = Spring boot configuration obtained through this function.  
  *  				  This provided the default gradle files, pom.xml and three class files which were this class with only the main method and one line;
- *  				  a basic version if what is now named the "InterfaceController" with only one entry and a third object class used to crete an example output
+ *  				  a basic version if what is now named the "InterfaceController" with only one entry and a third object class used to create an example output
  *  				  from an http request. Apart from the gradle files and pom.xml, none of the original code has remained the same except for the line:
  *  				  "SpringApplication.run(StartController.class);" which is used to initiated the server.
  *  
@@ -64,7 +64,6 @@ public class StartController {
 		return connector;
 	}*/
 	
-	//public static ArrayList<String> settings = new ArrayList<String>();
 	public static Map<String, String> setting = new HashMap<String,String>();
 	private final static Logger logger = Logger.getLogger(StartController.class.getName());
 	private static LtA logA = new LogObject();
@@ -77,7 +76,7 @@ public class StartController {
 				+ "   88    88         88   `8b. 88     88 88     88 88        88     88  \n"
 				+ "   88    Y8.   .88  88     88 Y8.   .8P 88     88 Y8.   .88 88     88  \n"
 				+ "   dP     Y88888P'  dP     dP `Y88888P' dP     dP  Y88888P' dP     dP \n" + "\n"
-				+ "<< Version 2.1>>      << Created by C.Morley 2016/2017 >>\n" + "\n");
+				+ "<< Version 2.7>>      << Created by C.Morley 2016/2017 >>\n" + "\n");
 		start();
 	}
 
@@ -126,7 +125,6 @@ public class StartController {
 				System.exit(0);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

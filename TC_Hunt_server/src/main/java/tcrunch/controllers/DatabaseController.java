@@ -12,37 +12,32 @@ import tccrunch.loggers.LogObject;
 import tccrunch.loggers.LtA;
 import tccrunch.threads.HealthCheck;
 
+/*	Created by:		Connor Morley
+ * 	Title:			TCrunch Server Database Interface Controller
+ *  Version update:	2.3
+ *  Notes:			Class is responsible for all interactions between the server application and the established MySQL database. 
+ *  
+ *  References:		N/A
+ */
+
 public class DatabaseController {
 	
   private static String address = null;
-  //private static Connection conn = null;
- // private static Statement stmt = null;
-  //private static ResultSet res = null;
-  //private static ResultSet res1 = null;
   public static Random random = new Random(System.currentTimeMillis());
   static LtA logA = new LogObject();
-
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
   
   public static Connection SQLConnect(){
     try {
-      // This will load the MySQL driver, each DB has its own driver
       Class.forName("com.mysql.jdbc.Driver");
-      // Setup the connection with the DB
       return DriverManager
           .getConnection(address);
     }
     catch(Exception e)
     {
     	logA.doLog("SQL" , "[SQL]Connection information issue, either driver or address : " + e.toString(), "Critical");
-        //System.out.println(e);
         throw new RuntimeException();
     }
   }
-
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 public static void execCustom(String query) {
 	Connection conn = SQLConnect();
@@ -60,9 +55,6 @@ public static void execCustom(String query) {
 	
 
 }
-
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static boolean checkRecoveredAttack() {
 		Connection conn = SQLConnect();
@@ -111,9 +103,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return true;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void checkForRecoveredFailedSequences() {
 		Connection conn = SQLConnect();
@@ -145,9 +134,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 }
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static String checkDev(String deviceID) {
 		Connection conn = SQLConnect();
@@ -176,9 +162,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return Integer.toString(arnSet);
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void getLastAID() {
 		Connection conn = SQLConnect();
@@ -204,9 +187,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void addARNCheck(int arn, String deviceID) {
 		Connection conn = SQLConnect();
@@ -227,9 +207,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void removeARNCheck(int arn) {
 		Connection conn = SQLConnect();
@@ -248,9 +225,6 @@ public static void execCustom(String query) {
 		}
 		close(conn);
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void addFailedSequence(int arn) {
 		Connection conn = SQLConnect();
@@ -270,9 +244,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void removeFailedSequence(int arn) {
 		Connection conn = SQLConnect();
@@ -292,9 +263,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void addAndStartAttackInformation() {
 		Connection conn = SQLConnect();
@@ -315,9 +283,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void enterCompleteInformation(String result) {
 		Connection conn = SQLConnect();
@@ -339,9 +304,6 @@ public static void execCustom(String query) {
 		close(conn);
 		return;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
 
 	public static void endAttack() {
 		Connection conn = SQLConnect();
@@ -362,29 +324,6 @@ public static void execCustom(String query) {
 		return;
 	}
 	
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
-
-	/*public static void updateCurrentArn(int arn) {
-		SQLConnect();
-		try {
-			stmt = conn.createStatement();
-			String query = "update attack_information set last_completed_arn = " + arn + " where attack_id = " + AttackController.attackID.get();
-			stmt.executeUpdate(query);
-		} catch (SQLException e) {
-			logA.doLog("SQL", "[SQL]Query error while retrieving custom dataset \nError is : " + e.toString(),
-					"Critical");
-			e.printStackTrace();
-			close();
-			throw new RuntimeException(e);
-		}
-		close();
-		return;
-	}*/
-
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
-
   public static void close(Connection conn) {
     try {
       if (conn != null) {
@@ -397,12 +336,9 @@ public static void execCustom(String query) {
   }
   
   
-  
   public static void setAddress(String submittedAddress)
   {
 	  address = submittedAddress;
   }
-  
-  
 
 } 

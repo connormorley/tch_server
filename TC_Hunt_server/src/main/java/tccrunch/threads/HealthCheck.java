@@ -15,11 +15,19 @@ import tcrunch.controllers.DatabaseController;
 import tcrunch.controllers.InterfaceController;
 import tcrunch.controllers.UserController;
 
+/*	Created by:		Connor Morley
+ * 	Title:			Health Check Thread
+ *  Version update:	2.4
+ *  Notes:			Class creates thread to monitor the node status, checks their health every 7.5 seconds to see if their last "ping" was over 10 seconds ago. 
+ *  				If yes the node is removed from the user nodes and the attack sequence assigned to the node is added to the failed sequences queue to be 
+ *  				picked up by the next available node OR the same node if it re-established contact with the server (although it will have to start the 
+ *  				sequence from the start).
+ *  
+ *  References:		N/A
+ */
+
 public class HealthCheck {
-	
-	 //Thread to monitor the node status, checks their health every 7.5 seconds to see if their last "ping" was over 10 seconds ago. If yes the node is removed from 
-	//the user nodes and the attack sequence assigned to the node is added to the failed sequences queue to be picked up by the next available node OR the same
-	//node if it re-established contact with the server (although it will have to start the sequence from the start).
+
 	static Future<Integer> future;
 	
 	public static void startHealthCheckThread()
@@ -32,7 +40,6 @@ public class HealthCheck {
 				Thread.currentThread().sleep(7500);
 			while(AttackController.runningAttack == true) // For as long as the attack is running carry out health check
 			{
-				//for(Map.Entry<String, Device> devEntry : UserController.nodes.entrySet())
 				for(Iterator<Map.Entry<String, Device>> iteration = UserController.nodes.entrySet().iterator(); iteration.hasNext();)
 				{
 					Map.Entry<String, Device> devEntry = iteration.next();
@@ -43,7 +50,6 @@ public class HealthCheck {
 						DatabaseController.removeARNCheck(devEntry.getValue().getAttackSequence());
 						System.out.println("Node: '" + devEntry.getKey() + "' has been removed and the attack sequence '" + devEntry.getValue().getAttackSequence() + "' has been added to the failed sequences.");
 						iteration.remove();
-						//UserController.nodes.remove(devEntry.getKey());
 						if(UserController.nodes.size() == InterfaceController.userWordlistsExpired)
 						{
 							InterfaceController.userWordlistsExpired = 0;

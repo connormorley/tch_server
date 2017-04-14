@@ -4,6 +4,16 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/*	Created by:		Connor Morley
+ * 	Title:			Default Logger Level Control
+ *  Version update:	1.5
+ *  Notes:			Class is used to control which log level particular messages are logged as. These log levels correspond to that 
+ *  				configured within the log handler. This class implements the log object class LtA. This class is identical across
+ *  				all system components.
+ *  
+ *  References:		N/A
+ */
+
 public class LogObject implements LtA {
 	@Override
     public void doLog(String sentName, String logInfo, String level) {
