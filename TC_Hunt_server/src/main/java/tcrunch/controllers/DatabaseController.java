@@ -8,9 +8,9 @@ import java.sql.Statement;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import tccrunch.loggers.LogObject;
-import tccrunch.loggers.LtA;
-import tccrunch.threads.HealthCheck;
+import tcrunch.loggers.LogObject;
+import tcrunch.loggers.LtA;
+import tcrunch.threads.HealthCheck;
 
 /*	Created by:		Connor Morley
  * 	Title:			TCrunch Server Database Interface Controller

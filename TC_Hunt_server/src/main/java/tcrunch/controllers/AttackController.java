@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import tccrunch.objects.Device;
-import tccrunch.threads.HealthCheck;
+import tcrunch.objects.Device;
+import tcrunch.threads.HealthCheck;
 
 /*	Created by:		Connor Morley
  * 	Title:			TCrunch Server Attack Control Class

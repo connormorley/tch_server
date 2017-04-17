@@ -1,4 +1,4 @@
-package tccrunch.objects;
+package tcrunch.objects;
 
 /*	Created by:		Connor Morley
  * 	Title:			TCrunch Server Device Object

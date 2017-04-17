@@ -1,4 +1,4 @@
-package tccrunch.loggers;
+package tcrunch.loggers;
 
 import java.io.IOException;
 import java.util.logging.Level;

@@ -20,9 +20,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import tccrunch.loggers.LogHandler;
-import tccrunch.loggers.LogObject;
-import tccrunch.loggers.LtA;
+import tcrunch.loggers.LogHandler;
+import tcrunch.loggers.LogObject;
+import tcrunch.loggers.LtA;
 
 
 /*	Created by:		Connor Morley

@@ -27,9 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tccrunch.loggers.LogObject;
-import tccrunch.loggers.LtA;
-import tccrunch.threads.HealthCheck;
+import tcrunch.loggers.LogObject;
+import tcrunch.loggers.LtA;
+import tcrunch.threads.HealthCheck;
 
 /*	Created by:		Connor Morley
  * 	Title:			TCrunch Server RESTFul interface class

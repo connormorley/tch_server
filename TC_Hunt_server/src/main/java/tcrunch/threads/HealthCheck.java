@@ -1,4 +1,4 @@
-package tccrunch.threads;
+package tcrunch.threads;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -9,11 +9,11 @@ import java.util.concurrent.Future;
 
 import org.json.JSONException;
 
-import tccrunch.objects.Device;
 import tcrunch.controllers.AttackController;
 import tcrunch.controllers.DatabaseController;
 import tcrunch.controllers.InterfaceController;
 import tcrunch.controllers.UserController;
+import tcrunch.objects.Device;
 
 /*	Created by:		Connor Morley
  * 	Title:			Health Check Thread

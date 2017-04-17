@@ -3,7 +3,7 @@ package tcrunch.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
-import tccrunch.objects.Device;
+import tcrunch.objects.Device;
 
 /*	Created by:		Connor Morley
  * 	Title:			TCrunch Server User Controller

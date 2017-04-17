@@ -1,4 +1,4 @@
-package tccrunch.loggers;
+package tcrunch.loggers;
 
 /*	Created by:		Connor Morley
  * 	Title:			Default Logger Object

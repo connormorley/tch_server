@@ -10,8 +10,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import tccrunch.loggers.LogObject;
-import tccrunch.loggers.LtA;
+import tcrunch.loggers.LogObject;
+import tcrunch.loggers.LtA;
 
 /*	Created by:		Connor Morley
  * 	Title:			TCrunch Server Email Service Controller
