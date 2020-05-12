@@ -15,3 +15,6 @@ This is the server element for the distriburted attack system. This component ma
 The system works on a RESTFUL system (I know not the most secure but it worked). The server holds the appropriate file fragement on file and distributes it to attached nodes as and when they become available. All nodes are recorded with an ID and their attack sequence co-ordinated against the heteregeneous balancing mechanisms employed. 
 
 The server has a basic form of security and user account settings, this means that only those with the appropriate settings and credentials can connect and make requests on its internal functions. This is by no means a secure system, but rather a redimentary incarnation of the server structure. The attack sequencing works nicely though. 
+
+# FULL RESEARCH PAPER
+TBA
